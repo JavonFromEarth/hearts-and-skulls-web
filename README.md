@@ -1,4 +1,4 @@
-# Hearts & Skulls — first playable release candidate
+# Hearts & Skulls — v0.3 three-color victory experiment
 
 Single-file, offline-capable, mobile-first web game. No build step, tracking, advertising, external fonts, libraries or connections.
 
@@ -10,7 +10,7 @@ Single-file, offline-capable, mobile-first web game. No build step, tracking, ad
 * To replace an opposing piece, your placed color must beat its color, and you must already own an **adjacent piece of the same color as your attacking piece**. The eight surrounding squares (including diagonals) count as adjacent.
 * Capturing does not destroy the ally enabling the capture; the challenger is a new piece placed onto the opponent's square.
 * A nearby counterattacker permits recapture, but does not block the original capture.
-* Three of your own side in any straight row, column, or diagonal wins, independent of colors.
+* Three of your own pieces in a straight row, column, or diagonal wins only when the line contains Red, Blue, and Yellow.
 * Threefold repetition or a position where the next player has no legal move is a draw.
 
 ## Prototype modes

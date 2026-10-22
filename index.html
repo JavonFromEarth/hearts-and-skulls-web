@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101021">
-<meta name="description" content="Hearts & Skulls — nine squares, three colors, one clever little duel.">
+<meta name="description" content="Hearts & Skulls — nine squares, three colors, one winning line.">
 <title>Hearts & Skulls</title>
 <style>
 :root{color-scheme:dark;--bg:#101021;--panel:#202039;--panel2:#282840;--paper:#fff8ed;--faint:#aeaebf;--line:#414055;--red:#fc6476;--blue:#60aeff;--yellow:#ffd05a;--heart:#fb8296;--skull:#a8a4fd;--accent:#ffcf73}
@@ -41,6 +41,11 @@ main{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,.80fr);gap:18
 .mode-switch{display:flex;background:#25243a;border:1px solid #46415d;border-radius:15px;padding:4px;gap:4px}
 .mode-switch button{flex:1;border:0;border-radius:11px;padding:10px 9px;min-height:39px;color:#b6b4c6;background:transparent;font-size:12px;font-weight:900}
 .mode-switch button.active{background:#4b4565;color:white;box-shadow:0 2px 8px #0005}
+.rule-bar{display:flex;align-items:center;gap:8px;border:1px solid #46415d;border-radius:14px;background:#25243a;padding:3px 4px 3px 10px;min-width:0}
+.rule-bar .mini-label{flex-shrink:0}
+.rule-toggle{display:flex;flex:1;gap:3px;min-width:0}
+.rule-toggle button{background:transparent;color:#b6b4c6;border:0;padding:8px 5px;border-radius:10px;font-size:11px;font-weight:900;min-height:35px;flex:1;white-space:nowrap}
+.rule-toggle button.active{background:#4b4565;color:#fff;box-shadow:0 2px 8px #0005}
 .mini-label{color:#b6b1c1;font-size:10px;letter-spacing:.14em;font-weight:950;text-transform:uppercase}
 .turn-card{border:1px solid #635b78;border-radius:20px;background:linear-gradient(125deg,#2d2c48,#202037);padding:15px 16px;box-shadow:0 6px 24px #07071335}
 .turn-name{font-size:clamp(23px,3vw,30px);font-weight:1000;letter-spacing:-.055em;margin:4px 0 0;display:flex;align-items:center;gap:8px}
@@ -60,11 +65,13 @@ footer{text-align:center;color:#716f87;font-size:10px;letter-spacing:.08em;paddi
 .overlay{position:fixed;inset:0;background:#0b0a18d9;z-index:10;display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(6px)}.overlay[hidden]{display:none}.dialog{max-height:calc(100dvh - 36px);overflow:auto;max-width:460px;width:100%;background:linear-gradient(155deg,#2a2947,#1f2038);padding:24px;border:1px solid #665d7f;border-radius:25px;box-shadow:0 20px 80px #000b}.dialog h2{font-weight:1000;letter-spacing:-.055em;font-size:29px;margin:0 0 8px}.dialog p,.dialog li{color:#d4d0e1;line-height:1.5;font-size:14px}.dialog ul{padding-left:21px}.dialog li{margin:8px 0}.dialog .button{width:100%;margin-top:10px}
 .winburst{animation:shimmer 1.4s infinite alternate}@keyframes shimmer{from{filter:drop-shadow(0 0 2px #ffc45c)}to{filter:drop-shadow(0 0 14px #ffe797)}}
 /* The entire match stays on screen on ordinary phones; small landscape uses two columns. */
-@media(max-width:700px){.app{gap:9px;padding:12px 12px 8px}main{display:flex;flex-direction:column;gap:9px;justify-content:flex-start}.arena{width:100%}.board-frame{width:min(100%,calc(100dvh - 405px),395px);min-width:min(238px,100%);border-radius:22px}.sidebar{display:contents}.mode-switch{width:100%;order:0}.turn-card{width:100%;padding:9px 12px;order:1}.score{order:2;width:100%;font-size:11px}.arena{order:3}.palette-block{order:4;width:100%}.controls-foot{order:5;width:100%}.legend{order:6}.choice{min-height:67px;padding:6px 4px;gap:2px}.choice .choice-icon{width:25px;height:25px;font-size:15px}.picker-label{margin:0 0 5px}.turn-name{font-size:21px;margin:1px 0 0}.turn-message{min-height:0;font-size:11px;margin:2px 0 0}.mode-switch button{min-height:32px;padding:7px}.score strong{font-size:13px}.icon-button{min-height:34px;padding:7px 10px}.mark{width:36px;height:36px;border-radius:12px}.brand{font-size:clamp(16px,5.1vw,20px)}.tagline{font-size:8px;letter-spacing:.08em}footer{padding:0}.number{font-size:10px}}
-@media(max-width:700px) and (max-height:750px){.app{gap:5px;padding:7px 10px}.board-frame{width:min(100%,calc(100dvh - 414px),385px);min-width:min(200px,100%);padding:6px}.mode-switch button{min-height:28px;padding:5px}.turn-card{padding:6px 10px}.turn-name{font-size:18px}.turn-message{font-size:10px}.choice{min-height:56px}.choice .choice-icon{width:21px;height:21px;font-size:12px}.choice small{font-size:9px}.controls-foot .button{padding:7px}.legend{font-size:9px}footer{display:none}}
-@media(max-width:700px) and (max-height:605px){.app{gap:3px}.tagline{display:none}.board-frame{width:min(100%,calc(100dvh - 357px),340px)}.turn-message{display:none}.choice{min-height:46px}.choice .choice-icon{width:20px;height:20px}.choice small{display:none}.picker-label{margin:0 0 3px}.cell{border-radius:13px}.choice{border-radius:11px}}
-@media(min-width:701px) and (max-height:580px){.app{padding:9px;gap:4px}main{grid-template-columns:minmax(0,1fr) minmax(270px,.7fr);gap:12px}.board-frame{width:min(68vh,430px)}.sidebar{gap:5px}.turn-card{padding:7px}.turn-message{display:none}.choice{min-height:53px;padding:4px}.choice .choice-icon{width:25px;height:25px;font-size:14px}footer{display:none}.picker-label{margin-bottom:2px}.legend{display:none}}
+@media(max-width:700px){.app{gap:9px;padding:12px 12px 8px}main{display:flex;flex-direction:column;gap:9px;justify-content:flex-start}.arena{width:100%}.board-frame{width:min(100%,calc(100dvh - 515px),395px);min-width:min(238px,100%);border-radius:22px}.sidebar{display:contents}.mode-switch{width:100%;order:0}.rule-bar{order:1;width:100%}.turn-card{width:100%;padding:9px 12px;order:2}.score{order:3;width:100%;font-size:11px}.arena{order:4}.palette-block{order:5;width:100%}.controls-foot{order:6;width:100%}.legend{order:7}.choice{min-height:67px;padding:6px 4px;gap:2px}.choice .choice-icon{width:25px;height:25px;font-size:15px}.picker-label{margin:0 0 5px}.turn-name{font-size:21px;margin:1px 0 0}.turn-message{min-height:0;font-size:11px;margin:2px 0 0}.mode-switch button{min-height:32px;padding:7px}.score strong{font-size:13px}.icon-button{min-height:34px;padding:7px 10px}.mark{width:36px;height:36px;border-radius:12px}.brand{font-size:clamp(16px,5.1vw,20px)}.tagline{font-size:8px;letter-spacing:.08em}footer{padding:0}.number{font-size:10px}}
+@media(max-width:700px) and (max-height:750px){.rule-toggle button{min-height:28px;padding:5px}.app{gap:5px;padding:7px 10px}.board-frame{width:min(100%,calc(100dvh - 457px),385px);min-width:min(200px,100%);padding:6px}.mode-switch button{min-height:28px;padding:5px}.turn-card{padding:6px 10px}.turn-name{font-size:18px}.turn-message{font-size:10px}.choice{min-height:56px}.choice .choice-icon{width:21px;height:21px;font-size:12px}.choice small{font-size:9px}.controls-foot .button{padding:7px}.legend{font-size:9px}footer{display:none}}
+@media(max-width:700px) and (max-height:605px){.rule-toggle button{min-height:25px;padding:3px}.rule-bar{padding-top:1px;padding-bottom:1px}.board-frame{min-width:min(165px,100%)}.app{gap:3px}.tagline{display:none}.board-frame{width:min(100%,calc(100dvh - 398px),340px)}.turn-message{display:none}.choice{min-height:46px}.choice .choice-icon{width:20px;height:20px}.choice small{display:none}.picker-label{margin:0 0 3px}.cell{border-radius:13px}.choice{border-radius:11px}}
+@media(min-width:701px) and (max-height:580px){.mode-switch button{min-height:30px;padding:5px}.rule-toggle button{min-height:25px;padding:4px}.rule-bar{padding-top:1px;padding-bottom:1px}.controls-foot .button{padding:6px}.app{padding:9px;gap:4px}main{grid-template-columns:minmax(0,1fr) minmax(270px,.7fr);gap:12px}.board-frame{width:min(68vh,430px)}.sidebar{gap:5px}.turn-card{padding:7px}.turn-message{display:none}.choice{min-height:53px;padding:4px}.choice .choice-icon{width:25px;height:25px;font-size:14px}footer{display:none}.picker-label{margin-bottom:2px}.legend{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.victory-rule{display:flex;gap:5px;flex-direction:column;color:#f5dfad;font-size:11px;font-weight:900;letter-spacing:.02em}.victory-rule small{color:#cbc5d5;font-size:10px;font-weight:650;letter-spacing:0}
+@media(max-width:380px) and (max-height:660px){.app{padding-top:4px;padding-bottom:2px;gap:2px}.rule-bar{padding-top:0;padding-bottom:0}}
 </style>
 </head>
 <body>
@@ -77,6 +84,7 @@ footer{text-align:center;color:#716f87;font-size:10px;letter-spacing:.08em;paddi
  <div class="arena"><div class="board-frame"><div class="board" id="board" role="group" aria-label="Three by three playing board"></div></div></div>
  <section class="sidebar" aria-label="Match controls">
   <div class="mode-switch" role="group" aria-label="Opponent mode"><button id="soloButton" type="button" class="active" aria-pressed="true">✦ Play computer</button><button id="localButton" type="button" aria-pressed="false">♡ Two players</button></div>
+  <div class="rule-bar"><span class="mini-label">Victory</span><div class="victory-rule"><strong>♥ / ☠ &nbsp; RED + BLUE + YELLOW</strong><small>One straight line. All yours. All three colors.</small></div></div>
   <div class="turn-card" aria-live="polite"><div class="mini-label" id="turnLabel">Your move</div><div class="turn-name" id="turnName"><span class="heart-text">♥ Hearts</span></div><p class="turn-message" id="turnMessage">Choose a color, then claim a square.</p></div>
   <div class="score" aria-live="polite"><span>♥ Hearts <strong id="heartsScore">0</strong></span><span id="matchCount">MATCH 01</span><span>Skulls ☠ <strong id="skullsScore">0</strong></span></div>
   <div class="palette-block"><div class="picker-label" id="pickerLabel">Your choice · Heartwould</div><div class="palette" role="group" aria-label="Choose a color">
@@ -85,12 +93,12 @@ footer{text-align:center;color:#716f87;font-size:10px;letter-spacing:.08em;paddi
    <button type="button" class="choice" data-color="Y" aria-pressed="false" style="--choice:var(--yellow)"><span class="choice-icon">S</span><b>Should</b><small>Yellow → Red</small></button>
   </div></div>
   <div class="controls-foot"><button type="button" class="button" id="sideButton">Swap sides ♥ / ☠</button><button type="button" class="button primary" id="nextButton">Rematch ↗</button></div>
-  <div class="legend"><b>The cycle:</b> <span class="red">RED</span> beats <span class="blue">BLUE</span> · <span class="blue">BLUE</span> beats <span class="yellow">YELLOW</span> · <span class="yellow">YELLOW</span> beats <span class="red">RED</span><br><b>Three hearts or skulls in a line wins.</b></div>
+  <div class="legend"><b>The cycle:</b> <span class="red">RED</span> beats <span class="blue">BLUE</span> · <span class="blue">BLUE</span> beats <span class="yellow">YELLOW</span> · <span class="yellow">YELLOW</span> beats <span class="red">RED</span><br><b>Line up your three colors to win.</b></div>
  </section>
 </main>
 <footer>9 SQUARES · 3 COLORS · 2 SIDES · NO SECRETS</footer>
 </div>
-<div class="overlay" id="rulesOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="dialog"><div class="mini-label">How to play</div><h2 id="rulesTitle">Small board. Big choices.</h2><ul><li><b>Take turns.</b> Choose Would (red), Could (blue), or Should (yellow), then tap an empty square.</li><li><b>Challenge a square.</b> To replace an enemy piece, you must have an existing piece of the <em>same color</em> next to it, and your color must beat the enemy's.</li><li><b>The cycle:</b> Red beats Blue. Blue beats Yellow. Yellow beats Red.</li><li><b>Defend or counterattack.</b> A nearby ally can make an immediate recapture possible. Defense doesn't prevent captures.</li><li><b>Win</b> by controlling three squares in any straight row, column, or diagonal. All eight neighboring squares count as adjacent.</li></ul><button class="button primary" id="closeRules" type="button">Let's play →</button></div></div>
+<div class="overlay" id="rulesOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="dialog"><div class="mini-label">How to play</div><h2 id="rulesTitle">Small board. Big choices.</h2><ul><li><b>Take turns.</b> Choose Would (red), Could (blue), or Should (yellow), then tap an empty square.</li><li><b>Challenge a square.</b> To replace an enemy piece, you must have an existing piece of the <em>same color</em> next to it, and your color must beat the enemy's.</li><li><b>The cycle:</b> Red beats Blue. Blue beats Yellow. Yellow beats Red.</li><li><b>Counterattack:</b> A neighboring ally may set up recapture, but it does not prevent the original capture.</li><li><b>Win</b> with three of your own pieces in a straight line, <em>one red, one blue, one yellow.</em> All eight surrounding squares count as adjacent.</li></ul><button class="button primary" id="closeRules" type="button">Let's play →</button></div></div>
 <div class="overlay" id="resetOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="resetTitle"><div class="dialog"><div class="mini-label">New game</div><h2 id="resetTitle">Leave this match?</h2><p>Your current board will be reset. Your match score will remain.</p><div class="controls-foot"><button class="button" id="cancelReset" type="button">Keep playing</button><button class="button primary" id="confirmReset" type="button">Start fresh ↗</button></div></div></div>
 <script>
 (()=>{'use strict';
@@ -112,7 +120,7 @@ const pureMoves=(board,side)=>{
  return moves;
 };
 const apply=(board,side,move)=>{const next=board.slice();next[move.i]={side,color:move.color};return next};
-const getWinner=board=>ROWS.find(row=>board[row[0]]&&row.every(i=>board[i]?.side===board[row[0]].side))||null;
+const getWinner=board=>ROWS.find(row=>board[row[0]]&&row.every(i=>board[i]?.side===board[row[0]].side)&&new Set(row.map(i=>board[i].color)).size===3)||null;
 const positionKey=(board,side)=>board.map(p=>p?p.side+p.color:'..').join('')+side;
 function pieceSvg(side,color){const fill=COLORS[color].color;
  if(side==='H')return `<svg viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="heart-${color}" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff" stop-opacity=".30"/><stop offset=".58" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".14"/></linearGradient></defs><path d="M48 86C29 70 8 56 8 33 8 7 35 5 48 23 61 5 88 7 88 33c0 23-21 37-40 53Z" fill="${fill}" stroke="#fff6" stroke-width="2"/><path d="M48 86C29 70 8 56 8 33 8 7 35 5 48 23 61 5 88 7 88 33c0 23-21 37-40 53Z" fill="url(#heart-${color})"/><path d="M20 27c3-9 11-13 17-10" fill="none" stroke="#fff9" stroke-width="5" stroke-linecap="round"/></svg>`;
@@ -122,8 +130,8 @@ const state={board:empty(),turn:'H',selected:'R',mode:'solo',human:'H',ended:fal
 let task=null;
 const label=(side,color)=>`${side==='H'?'Heart':'Head'}${COLORS[color].name.toLowerCase()}`;
 const mayAct=()=>!state.ended&&!state.thinking&&(state.mode==='local'||state.turn===state.human);
-function save(){try{localStorage.setItem('hearts-and-skulls-v01',JSON.stringify({board:state.board,turn:state.turn,selected:state.selected,mode:state.mode,human:state.human,ended:state.ended,winning:state.winning,score:state.score,match:state.match,seen:state.seen,last:state.last,message:state.message}));}catch(e){}}
-function load(){try{const old=JSON.parse(localStorage.getItem('hearts-and-skulls-v01'));if(old&&Array.isArray(old.board)&&old.board.length===9&&['H','S'].includes(old.turn)&&['solo','local'].includes(old.mode)){Object.assign(state,old);state.thinking=false;return true}}catch(e){}return false}
+function save(){try{localStorage.setItem('hearts-and-skulls-v03-tricolor',JSON.stringify({board:state.board,turn:state.turn,selected:state.selected,mode:state.mode,human:state.human,ended:state.ended,winning:state.winning,score:state.score,match:state.match,seen:state.seen,last:state.last,message:state.message}));}catch(e){}}
+function load(){try{const old=JSON.parse(localStorage.getItem('hearts-and-skulls-v03-tricolor'));if(old&&Array.isArray(old.board)&&old.board.length===9&&['H','S'].includes(old.turn)&&['solo','local'].includes(old.mode)){Object.assign(state,old);state.thinking=false;return true}}catch(e){}return false}
 function draw(){
  const legal=mayAct()?pureMoves(state.board,state.turn):[];
  DOM('board').innerHTML=state.board.map((p,i)=>{
@@ -151,7 +159,7 @@ function doMove(move){
  const verb=victim?`took ${victim.side==='H'?'Heart':'Head'}${COLORS[victim.color].name.toLowerCase()}`:`played ${label(side,move.color)}`;
  state.message=`${side==='H'?'Hearts':'Skulls'} ${verb} on square ${move.i+1}.`;
  const won=getWinner(state.board);
- if(won){state.ended=true;state.winning=won;state.score[side]++;state.message=`${side==='H'?'Hearts':'Skulls'} complete three in a row. ${victim?'What a capture!':'Well played.'}`;return}
+ if(won){state.ended=true;state.winning=won;state.score[side]++;state.message=`${side==='H'?'Hearts':'Skulls'} complete a red, blue, yellow line! ${victim?'What a capture!':'Well played.'}`;return}
  state.turn=enemy(side);
  const key=positionKey(state.board,state.turn);state.seen[key]=(state.seen[key]||0)+1;
  if(state.seen[key]>=3){declareDraw('Threefold repetition. No one takes the board.');return}
@@ -161,7 +169,11 @@ function move(i){
  if(!mayAct())return;
  const m=pureMoves(state.board,state.turn).find(m=>m.i===i&&m.color===state.selected);
  if(!m){const target=state.board[i];if(target?.side===state.turn)state.message='That square is already yours. Choose a different one.';
- else if(target)state.message=CYCLE[state.selected]!==target.color?`${COLORS[state.selected].name} cannot beat ${COLORS[target.color].name}.`:`You need a friendly ${COLORS[state.selected].name} next to that piece to capture it.`;
+ else if(target){
+   if(CYCLE[state.selected]!==target.color)state.message=`${COLORS[state.selected].name} cannot beat ${COLORS[target.color].name}.`;
+   else if(!state.board.some((p,j)=>p?.side===state.turn&&p.color===state.selected&&neighbors(i,j)))state.message=`You need a friendly ${COLORS[state.selected].name} next to that piece to capture it.`;
+   else state.message='That square is not available.';
+  }
  else state.message='That square is not available.';
  draw();return}
  doMove(m);draw();requestAI();
@@ -169,9 +181,9 @@ function move(i){
 function evaluate(board,side){
  const won=getWinner(board);if(won)return board[won[0]].side===side?100000:-100000;
  let result=0;
- for(const line of ROWS){let own=0,opp=0;for(const i of line){const x=board[i]?.side;if(x===side)own++;else if(x)opp++}
-  if(own&&!opp)result+=[0,5,48,100000][own];
-  if(opp&&!own)result-=[0,6,54,100000][opp];
+ for(const line of ROWS){const mine=line.map(i=>board[i]).filter(p=>p?.side===side);const theirs=line.map(i=>board[i]).filter(p=>p?.side===enemy(side));
+  if(mine.length&&!theirs.length){const distinct=new Set(mine.map(p=>p.color)).size;result+=mine.length===1?6:mine.length===2?(distinct===2?56:3):0;}
+  if(theirs.length&&!mine.length){const distinct=new Set(theirs.map(p=>p.color)).size;result-=theirs.length===1?7:theirs.length===2?(distinct===2?65:4):0;}
  }
  if(board[4]?.side===side)result+=9;else if(board[4])result-=9;
  for(const m of pureMoves(board,side))if(m.capture)result+=4;
